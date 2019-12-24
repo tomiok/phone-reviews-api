@@ -26,3 +26,7 @@ func NewSqlClient(source string) *MySqlClient {
 
 	return &MySqlClient{db}
 }
+
+func (c *MySqlClient) ViewStats() sql.DBStats{
+	return c.Stats()
+}

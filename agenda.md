@@ -10,3 +10,10 @@
 7. Makefile
 8. Dockerizar el proyecto
 9. Deploy en Heroku (gratis)
+
+### Module commands
+go mod init
+
+go mod tidy
+
+go mod vendor 

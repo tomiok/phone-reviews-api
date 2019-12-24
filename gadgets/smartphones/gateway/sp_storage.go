@@ -49,5 +49,3 @@ func (s *SmartphoneStorage) Add(cmd *models.CreateSmartphoneCMD) (*models.Smartp
 		OS:            cmd.OS,
 	}, nil
 }
-
-
