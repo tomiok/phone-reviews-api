@@ -2,20 +2,27 @@ package database
 
 import (
 	"database/sql"
-	"fmt"
 	_ "github.com/go-sql-driver/mysql"
+	"github.com/tomiok/course-phones-review/internal/logs"
 )
 
 type MySqlClient struct {
+	*sql.DB
 }
 
-func NewSqlClient(source string) *sql.DB {
+func NewSqlClient(source string) *MySqlClient {
 	db, err := sql.Open("mysql", source)
 
 	if err != nil {
-		_ = fmt.Errorf("cannot create db tentat: %s", err.Error())
-		panic("..")
+		logs.Log().Errorf("cannot create db tentat: %s", err.Error())
+		panic(err)
 	}
 
-	return db
+	err = db.Ping()
+
+	if err != nil {
+		logs.Log().Warn("cannot connect to mysql!")
+	}
+
+	return &MySqlClient{db}
 }
