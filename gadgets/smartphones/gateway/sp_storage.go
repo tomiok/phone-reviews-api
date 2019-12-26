@@ -7,14 +7,14 @@ import (
 )
 
 type SmartphoneStorageGateway interface {
-	Add(cmd *models.CreateSmartphoneCMD) (*models.Smartphone, error)
+	create(cmd *models.CreateSmartphoneCMD) (*models.Smartphone, error)
 }
 
 type SmartphoneStorage struct {
 	*database.MySqlClient
 }
 
-func (s *SmartphoneStorage) Add(cmd *models.CreateSmartphoneCMD) (*models.Smartphone, error) {
+func (s *SmartphoneStorage) create(cmd *models.CreateSmartphoneCMD) (*models.Smartphone, error) {
 	tx, err := s.MySqlClient.Begin()
 
 	if err != nil {
