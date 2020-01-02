@@ -5,6 +5,7 @@ import (
 	"github.com/golang-migrate/migrate"
 	migration "github.com/golang-migrate/migrate/database/mysql"
 	_ "github.com/golang-migrate/migrate/source/file"
+	"github.com/tomiok/course-phones-review/gadgets/smartphones/web"
 	"github.com/tomiok/course-phones-review/internal/database"
 	"github.com/tomiok/course-phones-review/internal/logs"
 )
@@ -20,10 +21,10 @@ func main() {
 	client := database.NewSqlClient("root:root@tcp(localhost:3306)/phones_review")
 	doMigrate(client, "phones_review")
 
-	mux := Routes()
+	handler := web.NewCreateSmartphoneHandler(client)
+	mux := Routes(handler)
 	server := NewServer(mux)
 	server.Run()
-
 }
 
 func doMigrate(client *database.MySqlClient, dbName string) {
