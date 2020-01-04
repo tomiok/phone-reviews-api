@@ -8,6 +8,7 @@ import (
 	"github.com/tomiok/course-phones-review/gadgets/smartphones/web"
 	"github.com/tomiok/course-phones-review/internal/database"
 	"github.com/tomiok/course-phones-review/internal/logs"
+	reviews "github.com/tomiok/course-phones-review/reviews/web"
 )
 
 const (
@@ -19,10 +20,14 @@ func main() {
 	_ = logs.InitLogger()
 
 	client := database.NewSqlClient("root:root@tcp(localhost:3306)/phones_review")
-	doMigrate(client, "phones_review")
+	//doMigrate(client, "phones_review")
+
+	mongoClient := database.NewMongoClient("localhost")
+
+	reviewHandler := reviews.NewReviewHandler(mongoClient)
 
 	handler := web.NewCreateSmartphoneHandler(client)
-	mux := Routes(handler)
+	mux := Routes(handler, reviewHandler)
 	server := NewServer(mux)
 	server.Run()
 }
